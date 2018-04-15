@@ -21,6 +21,10 @@ settingsDict = {
 }
 
 
+def spacer(amm):
+    print(""*amm)
+
+
 def loggingInit():
     os.chdir("C:\Potts' Software\Frame Ripper\Logging")
     logging.basicConfig(filename=getDate+"_frameRipper"+".log",
