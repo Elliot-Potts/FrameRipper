@@ -80,6 +80,12 @@ settingsInit()
 logging.info("Settings function has been passed without problem.")
 
 
+def statsCalculator(cVideo_name, cFull_path):
+
+
+    print("Will now return the statistics for getting frames from your video, {}.".format(str(cVideo_name)))
+
+
 def extractFrames(video_name, full_path):
     # pathToVideo = os.path.dirname(os.path.relpath(full_path))
 
@@ -139,8 +145,12 @@ CLI Arguments & Usage:
 --info : displays help and info message
 --website : displays my websites :) 
 
---video "<video.extension>" : will start grabbing frames from this video, 
-                              make sure to include quotation marks
+--calculate "<path\video.extension>" : will return useful information based on
+                                       your video, how long it will take, space required etc
+                                        (useful if you're curious of time, size, frame amount etc)
+
+--video "<path\video.extension>" : will start grabbing frames from this video, 
+                              make sure to include quotation marks (full path required)
 
 --gui : starts GUI application
             *may not be completed*
@@ -172,6 +182,9 @@ CLI Arguments & Usage:
         elif sys.argv[1] == "--directory":
             print("Changing the export directory to: {}".format(str(sys.argv[2])))
             settingsDict['save_directory'] = sys.argv[2]
+        elif sys.argv[1] == "--calculate":
+            calcVideoName = os.path.basename(sys.argv[2])
+            statsCalculator(calcVideoName, sys.argv[2])
         elif sys.argv[1] == "--video":
             # print("File path entered: {}".format(sys.argv[2]))
             # print(os.path.dirname(os.path.realpath(sys.argv[2])))
