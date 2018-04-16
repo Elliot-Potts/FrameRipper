@@ -2,6 +2,7 @@
 # Written by Elliot Potts: https://github.com/Elliot-Potts
 # Have a good day :D
 
+from hurry.filesize import size
 import configparser
 import webbrowser
 import logging
@@ -85,9 +86,25 @@ logging.info("Settings function has been passed without problem.")
 
 
 def statsCalculator(cVideo_name, cFull_path):
+    vidCap = cv2.VideoCapture(cFull_path)
+    frameLen = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
 
+    if os.path.isdir("C:\Potts' Software\Frame Ripper\Temp"):
+        pass
+    else:
+        os.mkdir("C:\Potts' Software\Frame Ripper\Temp")
 
-    print("Will now return the statistics for getting frames from your video, {}.".format(str(cVideo_name)))
+    os.chdir("C:\Potts' Software\Frame Ripper\Temp")
+
+    success, image = vidCap.read()
+
+    cv2.imwrite("temp_frame.jpg", image)
+
+    estimatedFileSize = os.path.getsize(r"C:\Potts' Software\Frame Ripper\Temp\temp_frame.jpg")
+    multiEstimatedFileSize = estimatedFileSize * frameLen
+    formattedSize = size(multiEstimatedFileSize)
+
+    return formattedSize
 
 
 def extractFrames(video_name, full_path):
@@ -98,9 +115,10 @@ def extractFrames(video_name, full_path):
     frameAmount = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
     frameAmount2 = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-    print("-- Press enter to continue --")
+    print("-- Press enter to continue -- Press Ctrl+C to abort --")
     print1 = input("About to begin extracting {} frames from {}".format(str(frameAmount), video_name))
-    print2 = input("This may take a while. Feel free to cancel at any moment with Ctrl+C.")
+    print2 = input("The estimated filesize for this extraction is {}".format(statsCalculator(video_name, full_path)))
+    print3 = input("This may take a while. Feel free to cancel at any moment with Ctrl+C.")
     print("-- Extracting in 5 seconds --")
 
     time.sleep(5)
@@ -187,8 +205,10 @@ CLI Arguments & Usage:
             print("Changing the export directory to: {}".format(str(sys.argv[2])))
             settingsDict['save_directory'] = sys.argv[2]
         elif sys.argv[1] == "--calculate":
+            print("Will now return the estimated file size for your video: {}".format(sys.argv[2]))
             calcVideoName = os.path.basename(sys.argv[2])
-            statsCalculator(calcVideoName, sys.argv[2])
+            fileSize = statsCalculator(calcVideoName, sys.argv[2])
+            print("The estimated file size for {} is: {}".format(sys.argv[2], fileSize))
         elif sys.argv[1] == "--video":
             # print("File path entered: {}".format(sys.argv[2]))
             # print(os.path.dirname(os.path.realpath(sys.argv[2])))
