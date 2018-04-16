@@ -87,34 +87,59 @@ try:
     logging.info("Settings function has been passed without problem.")
 
 
-    def statsCalculator(cVideo_name, cFull_path):
-        vidCap = cv2.VideoCapture(cFull_path)
-        frameLen = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
+    def statsCalculator(cVideo_name, cFull_path, single):
+        if single:
+            vicCap = cv2.VideoCapture(cFull_path)
+            frameLen = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-        if os.path.isdir("C:\Potts' Software\Frame Ripper\Temp"):
-            pass
+            if os.path.isdir("C:\Potts' Software\Frame Ripper\Temp"):
+                pass
+            else:
+                os.mkdir("C:\Potts' Software\Frame Ripper\Temp")
+
+            os.chdir("C:\Potts' Software\Frame Ripper\Temp")
+
+            success, image = vidCap.read()
+
+            cv2.imwrite("temp_frame.jpg", image)
+
+            estimatedFileSize = os.path.getsize(r"C:\Potts' Software\Frame Ripper\Temp\temp_frame.jpg")
+            formattedSize = size(estimatedFileSize)
+            formattedSize = formattedSize.replace("K", " Kilobytes")
+            formattedSize = formattedSize.replace("M", " Megabytes")
         else:
-            os.mkdir("C:\Potts' Software\Frame Ripper\Temp")
+            vidCap = cv2.VideoCapture(cFull_path)
+            frameLen = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-        os.chdir("C:\Potts' Software\Frame Ripper\Temp")
+            if os.path.isdir("C:\Potts' Software\Frame Ripper\Temp"):
+                pass
+            else:
+                os.mkdir("C:\Potts' Software\Frame Ripper\Temp")
 
-        success, image = vidCap.read()
+            os.chdir("C:\Potts' Software\Frame Ripper\Temp")
 
-        cv2.imwrite("temp_frame.jpg", image)
+            success, image = vidCap.read()
 
-        estimatedFileSize = os.path.getsize(r"C:\Potts' Software\Frame Ripper\Temp\temp_frame.jpg")
-        multiEstimatedFileSize = estimatedFileSize * frameLen
-        formattedSize = size(multiEstimatedFileSize)
-        formattedSize = formattedSize.replace("K", " Kilobytes")
-        formattedSize = formattedSize.replace("M", " Megabytes")
+            cv2.imwrite("temp_frame.jpg", image)
+
+            estimatedFileSize = os.path.getsize(r"C:\Potts' Software\Frame Ripper\Temp\temp_frame.jpg")
+            multiEstimatedFileSize = estimatedFileSize * frameLen
+            formattedSize = size(multiEstimatedFileSize)
+            formattedSize = formattedSize.replace("K", " Kilobytes")
+            formattedSize = formattedSize.replace("M", " Megabytes")
 
         return formattedSize
 
 
-    def extractFrames(video_name, full_path):
+    def extractFrames(video_name, full_path, count):
         # pathToVideo = os.path.dirname(os.path.relpath(full_path))
 
         vidCap = cv2.VideoCapture(full_path)
+
+        if count:
+            statCalcs = statsCalculator(video_name, full_path, count)
+        else:
+            statCalcs = statsCalculator(video_name, full_path, False)
 
         frameAmount = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
         frameAmount2 = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -216,6 +241,12 @@ try:
             elif sys.argv[1] == "--video":
                 # print("File path entered: {}".format(sys.argv[2]))
                 # print(os.path.dirname(os.path.realpath(sys.argv[2])))
+
+                if sys.argv[3]:
+                    videoName = os.path.basename(sys.argv[2])
+                    print("Extracting frame {} from video {}".format(str(sys.argv[3]), videoName))
+                    extractFrames(videoName, sys.argv[2], sys.argv[3])
+
                 videoName = os.path.basename(sys.argv[2])
                 print("Are you sure you want to extract frames from video {} to directory {}?".format(videoName,
                                                                                     str(settingsDict['save_directory'])))
@@ -223,7 +254,7 @@ try:
                 getExpConf = input("Enter Y/N: ").lower()
 
                 if getExpConf == "y":
-                    extractFrames(videoName, sys.argv[2])
+                    extractFrames(videoName, sys.argv[2], False)
                 elif getExpConf == "n":
                     print("You aborted. Exiting.")
                     sys.exit()
