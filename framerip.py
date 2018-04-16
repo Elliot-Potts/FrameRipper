@@ -245,15 +245,6 @@ try:
                 # print("File path entered: {}".format(sys.argv[2]))
                 # print(os.path.dirname(os.path.realpath(sys.argv[2])))
 
-                try:
-                    if sys.argv[3]:
-                        videoName = os.path.basename(sys.argv[2])
-                        print("Extracting frame {} from video {}".format(str(sys.argv[3]), videoName))
-                        extractFrames(videoName, sys.argv[2], sys.argv[3])
-                        sys.exit()
-                except IndexError:
-                    pass
-
                 videoName = os.path.basename(sys.argv[2])
                 print("Are you sure you want to extract frames from video {} to directory {}?".format(videoName,
                                                                                     str(settingsDict['save_directory'])))
