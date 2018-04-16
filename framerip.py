@@ -127,6 +127,7 @@ try:
             formattedSize = size(multiEstimatedFileSize)
             formattedSize = formattedSize.replace("K", " Kilobytes")
             formattedSize = formattedSize.replace("M", " Megabytes")
+            formattedSize = formattedSize.replace("G", " Gigabytes")
 
         return formattedSize
 
@@ -247,7 +248,7 @@ try:
             elif sys.argv[1] == "--calculate":
                 print("Will now return the estimated file size for your video: {}".format(sys.argv[2]))
                 calcVideoName = os.path.basename(sys.argv[2])
-                fileSize = statsCalculator(calcVideoName, sys.argv[2])
+                fileSize = statsCalculator(calcVideoName, sys.argv[2], False)
                 print("The estimated file size for {} is: {}".format(sys.argv[2], fileSize))
             elif sys.argv[1] == "--video":
                 # print("File path entered: {}".format(sys.argv[2]))
