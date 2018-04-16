@@ -89,8 +89,8 @@ try:
 
     def statsCalculator(cVideo_name, cFull_path, single):
         if single:
-            vicCap = cv2.VideoCapture(cFull_path)
-            frameLen = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
+            videoCap = cv2.VideoCapture(cFull_path)
+            frameLen = int(videoCap.get(cv2.CAP_PROP_FRAME_COUNT))
 
             if os.path.isdir("C:\Potts' Software\Frame Ripper\Temp"):
                 pass
@@ -99,7 +99,7 @@ try:
 
             os.chdir("C:\Potts' Software\Frame Ripper\Temp")
 
-            success, image = vidCap.read()
+            success, image = videoCap.read()
 
             cv2.imwrite("temp_frame.jpg", image)
 
@@ -138,15 +138,16 @@ try:
 
         if count:
             statCalcs = statsCalculator(video_name, full_path, count)
+            frameAmount = 1
+            frameAmount2 = 1
         else:
             statCalcs = statsCalculator(video_name, full_path, False)
-
-        frameAmount = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
-        frameAmount2 = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
+            frameAmount = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
+            frameAmount2 = int(vidCap.get(cv2.CAP_PROP_FRAME_COUNT))
 
         print("-- Press enter to continue -- Press Ctrl+C to abort --")
         print1 = input("About to begin extracting {} frames from {}".format(str(frameAmount), video_name))
-        print2 = input("The estimated filesize for this extraction is {}".format(statsCalculator(video_name, full_path)))
+        print2 = input("The estimated filesize for this extraction is {}".format(statCalcs))
         print3 = input("This may take a while. Feel free to cancel at any moment with Ctrl+C.")
         print("-- Extracting in 5 seconds --")
 
@@ -165,12 +166,22 @@ try:
         success = True
 
         while success:
-            success, image = vidCap.read()
-            cv2.imwrite(("{}{}_frame_{}.{}".format(settingsDict['save_prefix'], video_name, str(counter), settingsDict['extension'])),
-                                                  image)
-            print("Successfully extracted frame {}. {}/{} frames left.".format(
-                str(counter), str(frameAmount2 - counter), str(frameAmount)
-            ))
+            print("count = {}".format(str(count)))
+            print("counter = {}".format(str(counter)))
+
+            if counter > 0 and count is not False:
+                break
+            if count:
+                print("entered count loop")
+                if counter == count:
+                    print("entered count conditional loop")
+                    success, image = vidCap.read()
+                    cv2.imwrite(("{}{}_frame_{}.{}".format(settingsDict['save_prefix'], video_name, str(counter), settingsDict['extension'])),
+                                                          image)
+                    print("Successfully extracted frame {}. {}/{} frames left.".format(
+                        str(counter), str(frameAmount2 - counter), str(frameAmount)
+                    ))
+
             counter += 1
 
         opEndTime = time.time()
@@ -242,10 +253,14 @@ try:
                 # print("File path entered: {}".format(sys.argv[2]))
                 # print(os.path.dirname(os.path.realpath(sys.argv[2])))
 
-                if sys.argv[3]:
-                    videoName = os.path.basename(sys.argv[2])
-                    print("Extracting frame {} from video {}".format(str(sys.argv[3]), videoName))
-                    extractFrames(videoName, sys.argv[2], sys.argv[3])
+                try:
+                    if sys.argv[3]:
+                        videoName = os.path.basename(sys.argv[2])
+                        print("Extracting frame {} from video {}".format(str(sys.argv[3]), videoName))
+                        extractFrames(videoName, sys.argv[2], sys.argv[3])
+                        sys.exit()
+                except IndexError:
+                    pass
 
                 videoName = os.path.basename(sys.argv[2])
                 print("Are you sure you want to extract frames from video {} to directory {}?".format(videoName,
