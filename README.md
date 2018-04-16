@@ -15,7 +15,7 @@ I made this with hopes of expanding it in my spare time. I could maybe make a GU
 <li>A 40 second example video I used extracted 1000 frames, at 100MB in size</li>
 <li>Extraction can take a while and use a lot of space ^ </li>
 <li>If you're skeptical before performing an extraction, simple do: python framerip.py --calculate "path\video"</li>
-<li>Extracting frames with the BMP file extension dramatically reduces extraction time, but can product unpredictable outcomes</li>
+<li>Extracting frames with the BMP file extension dramatically reduces extraction time, but can produce unpredictable outcomes</li>
 </ol>
 
 ## Command-line arguments / usage
