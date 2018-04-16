@@ -167,21 +167,12 @@ try:
         success = True
 
         while success:
-            print("count = {}".format(str(count)))
-            print("counter = {}".format(str(counter)))
-
-            if counter > 0 and count is not False:
-                break
-            if count:
-                print("entered count loop")
-                if counter == count:
-                    print("entered count conditional loop")
-                    success, image = vidCap.read()
-                    cv2.imwrite(("{}{}_frame_{}.{}".format(settingsDict['save_prefix'], video_name, str(counter), settingsDict['extension'])),
-                                                          image)
-                    print("Successfully extracted frame {}. {}/{} frames left.".format(
-                        str(counter), str(frameAmount2 - counter), str(frameAmount)
-                    ))
+            success, image = vidCap.read()
+            cv2.imwrite(("{}{}_frame_{}.{}".format(settingsDict['save_prefix'], video_name, str(counter), settingsDict['extension'])),
+                                                  image)
+            print("Successfully extracted frame {}. {}/{} frames left.".format(
+                str(counter), str(frameAmount2 - counter), str(frameAmount)
+            ))
 
             counter += 1
 
