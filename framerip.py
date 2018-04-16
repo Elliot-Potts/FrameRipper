@@ -256,10 +256,16 @@ try:
     crConfig.close()
 
     logging.info("Settings have been saved at the end of the session.")
-    shutil.rmtree("C:\Potts' Software\Frame Ripper\Temp")
+    try:
+        shutil.rmtree("C:\Potts' Software\Frame Ripper\Temp")
+    except FileNotFoundError:
+        pass
 except KeyboardInterrupt:
     print(" \n[-] Program terminated via keyboard interruption.")
-    shutil.rmtree("C:\Potts' Software\Frame Ripper\Temp")
+    try:
+        shutil.rmtree("C:\Potts' Software\Frame Ripper\Temp")
+    except FileNotFoundError:
+        pass
 
 
 
