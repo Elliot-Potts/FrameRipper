@@ -103,6 +103,7 @@ def statsCalculator(cVideo_name, cFull_path):
     estimatedFileSize = os.path.getsize(r"C:\Potts' Software\Frame Ripper\Temp\temp_frame.jpg")
     multiEstimatedFileSize = estimatedFileSize * frameLen
     formattedSize = size(multiEstimatedFileSize)
+    formattedSize = formattedSize.replace("M", " Megabytes")
 
     return formattedSize
 
