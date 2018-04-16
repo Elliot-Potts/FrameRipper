@@ -7,6 +7,7 @@ import configparser
 import webbrowser
 import logging
 import datetime
+import shutil
 import time
 import sys
 import cv2
@@ -255,8 +256,10 @@ try:
     crConfig.close()
 
     logging.info("Settings have been saved at the end of the session.")
+    shutil.rmtree("C:\Potts' Software\Frame Ripper\Temp")
 except KeyboardInterrupt:
     print(" \n[-] Program terminated via keyboard interruption.")
+    shutil.rmtree("C:\Potts' Software\Frame Ripper\Temp")
 
 
 
