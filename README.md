@@ -5,7 +5,7 @@ I made this with hopes of expanding it in my spare time. I could maybe make a GU
 ## Prerequisites / Requirements
 <ol>
 <li>Python 3.6+</li>
-<li>OpenCV</li>
+<li>OpenCV2 (cv2)</li>
 <li>Webbrowser</li>
 <li>datetime</li>
 </ol>
