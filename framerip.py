@@ -5,8 +5,8 @@
 from hurry.filesize import size
 import configparser
 import webbrowser
-import logging
 import datetime
+import logging
 import shutil
 import time
 import sys
@@ -88,6 +88,10 @@ try:
 
 
     def statsCalculator(cVideo_name, cFull_path, single):
+        """
+        There have been problems with this function, and sometimes they produce 
+        incorrect calculations. Just know this when trying to calculate. This is a very bad estimation.
+        """
         if single:
             videoCap = cv2.VideoCapture(cFull_path)
             frameLen = int(videoCap.get(cv2.CAP_PROP_FRAME_COUNT))
